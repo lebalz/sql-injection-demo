@@ -46,7 +46,7 @@ function showTable($blend_name)
           echo ('</tr>');
         }
       } else {
-        echo('ERROR: not working!');
+        echo('ERROR: ' . mysqli_error($db));
       }
       mysqli_close($db);
     ?>

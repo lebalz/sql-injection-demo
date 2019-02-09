@@ -9,18 +9,21 @@
   <?php
     $filter = array_key_exists('blend', $_GET) ? $_GET['blend'] : ''
   ?>
-  <h1>Onlineshop Kaffee</h1>
-  <form  action="index.php" method="get">
-  <div class="form-group">
-    <label for="blendFilter">Blend Name</label>
-    <input type="text" class="form-control" id="blendFilter" name="blend"
-           placeholder="Filter Blend Names" value=<?php echo($filter) ?>>
-  </div>
-  <button type="submit" class="btn btn-primary">Filtern</button>
-</form>
+  <h1>Onlineshop Coffee</h1>
+  <form action="index.php" method="get">
+    <div class="form-group">
+      <label for="blendFilter">Blend Name</label>
+      <input type="text" class="form-control" id="blendFilter" name="blend"
+            placeholder="Filter Blend Names" value=<?php echo('"' . $filter . '"'); ?>>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </form>
   <?php
     require_once('showTable.php');
     showTable($filter);
   ?>
+  <form  action="recreate_and_seed_db.php" method="post">
+    <button type="submit" class="btn btn-danger btn-sm">Recreate Table</button>
+  </form>
 </body>
 </html>
