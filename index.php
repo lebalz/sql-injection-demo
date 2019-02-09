@@ -19,8 +19,8 @@
     <button type="submit" class="btn btn-primary">Filter</button>
   </form>
   <?php
-    require_once('showTable.php');
-    showTable($filter);
+    require_once('show_table.php');
+    show_table($filter);
   ?>
   <form  action="recreate_and_seed_db.php" method="post">
     <button type="submit" class="btn btn-danger btn-sm">Recreate Table</button>

@@ -1,8 +1,8 @@
 <?php
   require_once('connectdb.php');
   $drop_sql = 'DROP TABLE IF EXISTS coffee;';
-  $create_sql = file_get_contents('create_db.sql');
-  $data_sql = file_get_contents('coffee_data.sql');
+  $create_sql = file_get_contents('sql/create_db.sql');
+  $data_sql = file_get_contents('sql/coffee_data.sql');
   $db = connectdb();
   $result = mysqli_query($db, $drop_sql);
   if (!$result) {
