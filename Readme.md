@@ -20,6 +20,6 @@ Create the Database `inject_demodb`:
 CREATE DATABASE inject_demodb;
 ```
 
-Edit the `$host` in the file `connectdb.php`.
+Edit the `$host` in the file [connectdb.php](lib/connectdb.php).
 
 Then serve `index.php` and click the a button `Recreate Table` which will create the table `coffee` in your database and seed some data. The data was created with the [faker-gem](https://github.com/stympy/faker) by @stympy.
