@@ -4,7 +4,7 @@ function show_table($blend_name)
   ?>
   <table class="table border">
     <tr>
-      <th>id</th>
+      <th>ID</th>
       <th>BlendName</th>
       <th>Origin</th>
       <th>Variety</th>
@@ -15,7 +15,7 @@ function show_table($blend_name)
     <?php
       require_once('connectdb.php');
       // vulnerability to sql injection
-      $query = "SELECT * FROM coffee WHERE blend_name LIKE '%". $blend_name . "%';";
+      $query = "SELECT * FROM coffee WHERE blend_name LIKE '%$blend_name%';";
     ?>
     <br>
     <div class="card">

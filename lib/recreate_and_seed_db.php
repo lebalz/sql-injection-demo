@@ -1,5 +1,7 @@
 <?php
   require_once('connectdb.php');
+  $db = connectdb('');
+  mysqli_query($db, "CREATE DATABASE IF NOT EXISTS inject_demodb;");
   $drop_sql = 'DROP TABLE IF EXISTS coffee;';
   $create_sql = file_get_contents('../sql/create_db.sql');
   $data_sql = file_get_contents('../sql/coffee_data.sql');
