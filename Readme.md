@@ -1,8 +1,32 @@
 # Demo SQL Injection
 
-The prupose of this mockup of a simple webshop is to demonstrate the sql injection vulnerability.
+<p align="center">
+  <a href="#"><img src="./docs/images/shop_screenshot.jpg" /></a>
+</p>
 
+The prupose of this mockup of a simple webshop is to demonstrate the sql injection vulnerability. In this project all database queries used are intentionally vulnerable to sql injection.
+
+### Filter
 The listed products can be filtered by the `Blend Name`. The userinput is not sanitized what makes it vulnerable for sql injections.
+* sort or filter by custom attribute
+* edit entries
+* drop table
+* drop database
+* list users from other table
+* ...
+
+### Login
+The login is also not protected against sql injection.
+A logged in user can add items to his cart; a user with admin privileges can additionally delete items.
+* login without any credentials
+* login as admin
+* give a user admin privileges
+* ...
+
+### Recreate initial state
+
+At the bottom of the page, there is a button
+  <span><img height="15em" src="./docs/images/recreate.png" /></span>, which restores a pristine db state.
 
 ## Setup
 
