@@ -8,6 +8,7 @@
 <body>
   <?php
   session_start();
+  require_once('lib/helpers.php');
   $filter = array_key_exists('blend', $_GET) ? $_GET['blend'] : '';
   ?>
   <nav class="navbar navbar-dark bg-dark justify-content-end">
@@ -19,10 +20,11 @@
       </form>
     <?php
   }
-  if (isset($_SESSION['user'])) {
+  if (logged_in()) {
+    $user = current_user();
     ?>
       <form class="form-inline mr-0" action="lib/logout.php" method="post">
-        <h5 class="mr-2 mt-1"><span class="badge badge-primary"><?php echo ($_SESSION['user']); ?></span></h5>
+        <h5 class="mr-2 mt-1"><span class="badge badge-primary"><?php echo ($user['name']); ?></span></h5>
         <button class="btn btn-outline-success my-2 btn-sm my-sm-0" type="submit">Logout</button>
       </form>
     <?php

@@ -1,8 +1,9 @@
 
   <?php
   session_start();
+  require_once('helpers.php');
   
-  if (isset($_SESSION['user'])) {
+  if (logged_in()) {
     header('Location: ../index.php');
     exit;    
   }
@@ -19,11 +20,11 @@
   }
   if ($result) {
     $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    if ($user['name']) {
-      $_SESSION['user'] = $user['name'];
+    if (isset($user['id'])) {
+      $_SESSION['user_id'] = $user['id'];
     }
   }
-  if (!isset($_SESSION['user'])) {
+  if (!isset($_SESSION['user_id'])) {
     $_SESSION['login_error'] = true;
   }
   mysqli_close($db);

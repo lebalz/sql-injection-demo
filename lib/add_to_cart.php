@@ -1,8 +1,9 @@
 <?php  
   session_start();
-  if (!isset($_SESSION['user'])) {
+  require_once('helpers.php');
+  if (!logged_in()) {
     header('Location: ../index.php');
-    exit;    
+    exit;
   }
   $id = $_POST['id'];
   if (!isset($_SESSION['cart_items'])) {
@@ -10,4 +11,4 @@
   }
   array_push($_SESSION['cart_items'], $id);
   header('Location: ../index.php');
- ?>
+?>

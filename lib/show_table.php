@@ -4,7 +4,9 @@ function show_table($blend_name)
   if (session_status() == PHP_SESSION_NONE) {
     session_start();
   }
-  $logged_in = isset($_SESSION['user']);
+  require_once('helpers.php');
+  $logged_in = logged_in();
+  $admin = is_admin();
   ?>
   <table class="table border">
     <tr>
@@ -18,6 +20,9 @@ function show_table($blend_name)
       <?php
       if ($logged_in) {
         echo ("<th>Shop</th>");
+      }
+      if ($admin) {
+        echo ("<th>Löschen</th>");
       }
       ?>
     </tr>
@@ -40,7 +45,8 @@ function show_table($blend_name)
     <h3>Kaffee</h3>
     <?php
     $db = connectdb();
-    // mysqli_multi_query is required. With mysqli_query only the first
+    // mysqli_multi_query is required to demonstrate all possible
+    // sql-injection variants. With mysqli_query only the first
     // query statement is performed to prevent sql injection...
     $result = mysqli_multi_query($db, $query);
     if ($result) {
@@ -55,14 +61,26 @@ function show_table($blend_name)
         if ($logged_in) {
           $id = $coffee['id'];
           echo ("
-              <td>
-                <form action=\"lib/add_to_cart.php\" method=\"post\">
-                  <button name=\"item\" value=\"$id\" type=\"submit\" class=\"btn\">
-                    🛒
-                  </button>
-                </form>
-              </td>
-            ");
+            <td>
+              <form action=\"lib/add_to_cart.php\" method=\"post\">
+                <button name=\"item\" value=\"$id\" type=\"submit\" class=\"btn px-1 py-0\">
+                  🛒
+                </button>
+              </form>
+            </td>
+          ");
+        }
+        if ($admin) {
+          $id = $coffee['id'];
+          echo ("
+            <th>
+              <form class=\"form-inline mr-3\" action=\"lib/delete_item.php\" method=\"post\">
+                <button name=\"id\" value=\"$id\" type=\"submit\" class=\"btn btn-danger px-1 py-0\">
+                  &times;
+                </button>
+              </form>
+            </th>
+          ");
         }
         echo ('</tr>');
       }
