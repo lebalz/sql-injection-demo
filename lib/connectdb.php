@@ -4,7 +4,7 @@ function connectdb($database = "inject_demodb")
   if ($database == '') {
     $database = NULL;
   }
-  $host = "mdm2016.bbz.cloud";
+  $host = "ssh.balthasarhofer.ch";
   $port = 21;
   $username = "sql_injection";
   $password = "VeHUutCp7Z9SQYTHP4I55oCzz6ohaT5R";
