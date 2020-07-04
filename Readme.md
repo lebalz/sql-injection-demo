@@ -33,7 +33,7 @@ At the bottom of the page, there is a button
 Create in mysql a new user `sql_injection` and grant him all privileges only for the database `inject_demodb`. It's important to ensure no other databases are affected by the sql injection vulnerability.
 
 ```SQL
-CREATE USER 'sql_injection'@'%' IDENTIFIED BY 'VeHUutCp7Z9SQYTHP4I55oCzz6ohaT5R';
+CREATE USER 'sql_injection'@'%' IDENTIFIED BY 'foobar';
 GRANT ALL PRIVILEGES ON `inject_demodb` . * TO 'sql_injection'@'%';
 FLUSH PRIVILEGES;
 ```
@@ -46,4 +46,24 @@ CREATE DATABASE inject_demodb;
 
 Edit the `$host` in the file [connectdb.php](lib/connectdb.php).
 
+The database `host`, `port`, `username` and `password` can be set over the following environment variables (in case you want to deploy it to a server):
+
+```sh
+SQL_INJECTION_DB_HOST="localhost"
+SQL_INJECTION_DB_PORT="3306"
+SQL_INJECTION_DB_USERNAME="sql_injection"
+SQL_INJECTION_DB_PASSWORD="foobar"
+```
+
 Then serve `index.php` and click the a button `Recreate Table` which will create the table `coffee` in your database and seed some data. The data was created with the [faker-gem](https://github.com/stympy/faker) by @stympy.
+
+
+## Dokku deploy
+
+```sh
+dokku apps:create sql-injection-demo
+dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_HOST=
+dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_PORT=
+dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_USERNAME=
+dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_PASSWORD=
+```
