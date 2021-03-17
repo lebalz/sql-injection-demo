@@ -60,10 +60,11 @@ Then serve `index.php` and click the a button `Recreate Table` which will create
 
 ## Dokku deploy
 
+With dokku, the propper db management is handled by dokku itself when linking the app to mysql. The linking sets an ENV-Variable 'DATABASE_URL' which is then used to for the db connection.
+
 ```sh
-dokku apps:create sql-injection-demo
-dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_HOST=
-dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_PORT=
-dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_USERNAME=
-dokku config:set --no-restart sql-injection-demo SQL_INJECTION_DB_PASSWORD=
+$APP='sql-injection-demo'
+dokku apps:create $APP
+dokku mysql:create $APP
+dokku mysql:link $APP $APP
 ```
