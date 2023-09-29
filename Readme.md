@@ -38,6 +38,15 @@ GRANT ALL PRIVILEGES ON `inject_demodb` . * TO 'sql_injection'@'%';
 FLUSH PRIVILEGES;
 ```
 
+Note: to be able to create a new user under dokku, check the root user:
+
+```bash
+#user:
+echo root
+# password:
+cat /var/lib/dokku/services/mysql/app-name/ROOTPASSWORD
+```
+
 Create the Database `inject_demodb`:
 
 ```SQL
