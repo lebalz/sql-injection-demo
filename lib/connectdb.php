@@ -26,7 +26,7 @@ function connectdb($database = NULL)
       echo ("Connection failed: " . mysqli_connect_error());
     }
     return $db;
-  } catch (Exception $e) {
-    echo ("Connection failed: " . mysqli_connect_error());
+  } catch (Error $e) {
+    echo ("Connection failed: " . $e);
   }
 }

@@ -29,9 +29,9 @@ function current_user()
       mysqli_close($db);
       return $user;
     }
-  } catch (Exception $e) {
+  } catch (Error $e) {
     $result = false;
-    echo ('ERROR: ' . mysqli_error($db));
+    echo ('ERROR: ' . $e);
   } finally {
     mysqli_close($db);
   }
@@ -61,9 +61,9 @@ function is_admin()
       $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
       return $user['role'] == 'admin';
     }
-  } catch (Exception $e) {
+  } catch (Error $e) {
     $result = false;
-    echo ('ERROR: ' . mysqli_error($db));
+    echo ('ERROR: ' . $e);
   } finally {
     mysqli_close($db);
   }

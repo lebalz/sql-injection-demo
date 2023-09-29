@@ -9,11 +9,12 @@
   $db = connectdb('information_schema');
   mysqli_query($db, "CREATE DATABASE IF NOT EXISTS $database;");
   mysqli_close($db);
-
   // coffee table
   $drop_sql = 'DROP TABLE IF EXISTS coffee;';
   $create_sql = file_get_contents('../sql/create_db.sql');
   $data_sql = file_get_contents('../sql/coffee_data.sql');
+
+
 
   $db = connectdb();
   $result = mysqli_query($db, $drop_sql);

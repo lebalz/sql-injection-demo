@@ -44,18 +44,18 @@ function show_table($blend_name)
     <br>
     <h3>Kaffee</h3>
     <?php
-    $db = connectdb();
     // mysqli_multi_query is required to demonstrate all possible
     // sql-injection variants. With mysqli_query only the first
     // query statement is performed to prevent sql injection...
     try {
+      $db = connectdb();
       $result = mysqli_multi_query($db, $query);
       if ($result) {
         $result = mysqli_use_result($db);
       }
-    } catch (Exception $e) {
+    } catch (Error $e) {
       $result = false;
-      echo ('ERROR: ' . mysqli_error($db));
+      echo ('ERROR: ' . $e);
     }
     if ($result) {
       while ($coffee = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
@@ -90,9 +90,17 @@ function show_table($blend_name)
         echo ('</tr>');
       }
     } else {
-      echo ('ERROR: ' . mysqli_error($db));
+      try {
+        echo ('ERROR: ' . mysqli_error($db));
+      } catch (Error $e) {
+        echo('ERROR: ' . $e);
+      } 
     }
-    mysqli_close($db);
+    try {
+      mysqli_close($db);
+    } catch (Error $e) {
+      echo('ERROR: ' . $e);
+    }
     ?>
   </table>
 <?php

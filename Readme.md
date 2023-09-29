@@ -77,7 +77,7 @@ dokku apps:create $APP
 dokku mysql:create $APP
 dokku mysql:link $APP $APP
 
-dokku config:set --no-restart myapp DOKKU_LETSENCRYPT_EMAIL=your@email.tld
+dokku config:set --no-restart $APP DOKKU_LETSENCRYPT_EMAIL=your@email.tld
 dokku letsencrypt $APP
 
 # optional expose $APP
