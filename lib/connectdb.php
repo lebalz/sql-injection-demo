@@ -28,5 +28,7 @@ function connectdb($database = NULL)
     return $db;
   } catch (Error $e) {
     echo ("Connection failed: " . $e);
+  } catch (Exception $e) {
+    echo ("Connection failed: " . $e);
   }
 }
