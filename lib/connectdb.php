@@ -1,9 +1,6 @@
 <?php
-function connectdb($database = "inject_demodb")
+function connectdb($database = NULL)
 {
-  if ($database == '') {
-    $database = NULL;
-  }
   if (isset($_ENV['DATABASE_URL'])) {
     //  http://username:password@hostname:9090/path
     $db_props = parse_url($_ENV['DATABASE_URL']);
@@ -13,6 +10,11 @@ function connectdb($database = "inject_demodb")
     $password = $db_props['pass'];
     $database = $database ? $database : substr($db_props['path'], 1); // remove the slash from '/path'
   } else {
+    if ($database == '') {
+      $database = NULL;
+    } else {
+      $database = "inject_demodb";
+    }
     $host = isset($_ENV['SQL_INJECTION_DB_HOST']) ? $_ENV['SQL_INJECTION_DB_HOST'] : 'localhost';
     $port = isset($_ENV['SQL_INJECTION_DB_PORT']) ? $_ENV['SQL_INJECTION_DB_PORT'] : 3306;
     $username = isset($_ENV['SQL_INJECTION_DB_USERNAME']) ? $_ENV['SQL_INJECTION_DB_USERNAME'] : 'sql_injection';
