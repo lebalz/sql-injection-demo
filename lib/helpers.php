@@ -18,17 +18,23 @@ function current_user()
   // session variables can be changed and thus sql
   // injection is possible here aswell!
   $query = "SELECT * from users WHERE id=$user_id";
-  $db = connectdb();
-  $result = mysqli_multi_query($db, $query);
-  if ($result) {
-    $result = mysqli_use_result($db);
-  }
-  if ($result) {
-    $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  try {
+    $db = connectdb();
+    $result = mysqli_multi_query($db, $query);
+    if ($result) {
+      $result = mysqli_use_result($db);
+    }
+    if ($result) {
+      $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      mysqli_close($db);
+      return $user;
+    }
+  } catch (Exception $e) {
+    $result = false;
+    echo ('ERROR: ' . mysqli_error($db));
+  } finally {
     mysqli_close($db);
-    return $user;
   }
-  mysqli_close($db);
   return false;
 }
 
@@ -45,16 +51,21 @@ function is_admin()
   // session variables can be changed and thus sql
   // injection is possible here aswell!
   $query = "SELECT * from users WHERE id=$user_id";
-  $db = connectdb();
-  $result = mysqli_multi_query($db, $query);
-  if ($result) {
-    $result = mysqli_use_result($db);
-  }
-  if ($result) {
-    $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+  try {
+    $db = connectdb();
+    $result = mysqli_multi_query($db, $query);
+    if ($result) {
+      $result = mysqli_use_result($db);
+    }
+    if ($result) {
+      $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      return $user['role'] == 'admin';
+    }
+  } catch (Exception $e) {
+    $result = false;
+    echo ('ERROR: ' . mysqli_error($db));
+  } finally {
     mysqli_close($db);
-    return $user['role'] == 'admin';
   }
-  mysqli_close($db);
   return false;
 }

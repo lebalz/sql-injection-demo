@@ -18,9 +18,13 @@ function connectdb($database = "inject_demodb")
     $username = isset($_ENV['SQL_INJECTION_DB_USERNAME']) ? $_ENV['SQL_INJECTION_DB_USERNAME'] : 'sql_injection';
     $password = isset($_ENV['SQL_INJECTION_DB_PASSWORD']) ? $_ENV['SQL_INJECTION_DB_PASSWORD'] : 'foobar';
   }
-  $db = mysqli_connect($host, $username, $password, $database, $port);
-  if (!$db) {
+  try {
+    $db = mysqli_connect($host, $username, $password, $database, $port);
+    if (!$db) {
+      echo ("Connection failed: " . mysqli_connect_error());
+    }
+    return $db;
+  } catch (Exception $e) {
     echo ("Connection failed: " . mysqli_connect_error());
   }
-  return $db;
 }
