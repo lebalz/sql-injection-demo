@@ -1,7 +1,7 @@
 <?php
   require_once('connectdb.php');
-  if (isset($_ENV['DATABASE_URL'])) {
-    $db_props = parse_url($_ENV['DATABASE_URL']);
+  if (getenv('DATABASE_URL')) {
+    $db_props = parse_url(getenv('DATABASE_URL'));
     $database = substr($db_props['path'], 1);
   } else {
     $database = 'inject_demodb';

@@ -26,7 +26,6 @@ function current_user()
     }
     if ($result) {
       $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-      mysqli_close($db);
       return $user;
     }
   } catch (Error $e) {
