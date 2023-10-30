@@ -63,6 +63,12 @@
     </div>
     <button type="submit" class="btn btn-primary">Filter</button>
   </form>
+  <details>
+    <summary>Recreate</summary>
+    <form action="lib/recreate_and_seed_db.php" method="post">
+      <button type="submit" class="btn btn-danger btn-sm">Recreate Table</button>
+    </form>
+  </details>
   <?php
   require_once('lib/show_table.php');
   show_table($filter);
