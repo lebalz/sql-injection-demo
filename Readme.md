@@ -74,6 +74,7 @@ With dokku, the propper db management is handled by dokku itself when linking th
 ```sh
 $APP='sql-injection-demo'
 dokku apps:create $APP
+dokku domains:set $APP sql-injection-demo.yourdomain.tld
 dokku mysql:create $APP
 dokku mysql:link $APP $APP
 
