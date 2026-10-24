@@ -26,7 +26,8 @@
     }
   } catch (Throwable $e) {
     http_response_code(500);
-    echo ('ERROR: ' . $e->getMessage());
+    require_once(__DIR__ . '/show_sql_error.php');
+    show_sql_error($e->getMessage());
     return;
   } finally {
     if ($db) mysqli_close($db);

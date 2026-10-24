@@ -7,26 +7,6 @@ function show_table($blend_name)
   require_once('helpers.php');
   $logged_in = logged_in();
   $admin = is_admin();
-  ?>
-  <table class="table border">
-    <tr>
-      <th>ID</th>
-      <th>BlendName</th>
-      <th>Origin</th>
-      <th>Variety</th>
-      <th>Notes</th>
-      <th>Intensifier</th>
-      <th>Price</th>
-      <?php
-      if ($logged_in) {
-        echo ("<th>Shop</th>");
-      }
-      if ($admin) {
-        echo ("<th>Löschen</th>");
-      }
-      ?>
-    </tr>
-    <?php
     require_once('connectdb.php');
     // vulnerability to sql injection
     $query = "SELECT * FROM coffee WHERE blend_name LIKE '%$blend_name%';";
@@ -53,8 +33,29 @@ function show_table($blend_name)
       $db = connectdb();
       $result = run_query($db, $query);
     } catch (Throwable $e) {
-      echo ('ERROR: ' . $e->getMessage());
+      require_once(__DIR__ . '/show_sql_error.php');
+      show_sql_error($e->getMessage());
     }
+    ?>
+  <table class="table border">
+    <tr>
+      <th>ID</th>
+      <th>BlendName</th>
+      <th>Origin</th>
+      <th>Variety</th>
+      <th>Notes</th>
+      <th>Intensifier</th>
+      <th>Price</th>
+      <?php
+      if ($logged_in) {
+        echo ("<th>Shop</th>");
+      }
+      if ($admin) {
+        echo ("<th>Löschen</th>");
+      }
+      ?>
+    </tr>
+    <?php
     if ($result) {
       while ($coffee = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         echo ('<tr>');

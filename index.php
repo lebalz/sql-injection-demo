@@ -46,6 +46,13 @@
   ?>
   </nav>
   <?php
+  if (!empty($_SESSION['sql_errors'])) {
+    require_once('lib/show_sql_error.php');
+    foreach ($_SESSION['sql_errors'] as $message) {
+      show_sql_error($message);
+    }
+    unset($_SESSION['sql_errors']);
+  }
   if (isset($_SESSION['login_error'])) {
     unset($_SESSION['login_error']);
     ?>

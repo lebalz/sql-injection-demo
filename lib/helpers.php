@@ -28,7 +28,7 @@ function current_user()
       if ($user) return $user;
     }
   } catch (Throwable $e) {
-    echo ('ERROR: ' . $e->getMessage());
+    $_SESSION['sql_errors'][] = $e->getMessage();
   } finally {
     if ($db) mysqli_close($db);
   }
