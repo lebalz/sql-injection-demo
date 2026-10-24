@@ -40,7 +40,13 @@ function run_query($db, $query)
   mysqli_multi_query($db, $query);
   $result = mysqli_store_result($db);
   while (mysqli_more_results($db)) {
-    mysqli_next_result($db);
+    try {
+      mysqli_next_result($db);
+    } catch (mysqli_sql_exception $e) {
+      // Display the first SELECT even if a later injected statement fails.
+      if ($result) return $result;
+      throw $e;
+    }
     $next_result = mysqli_store_result($db);
     if ($next_result) {
       mysqli_free_result($next_result);

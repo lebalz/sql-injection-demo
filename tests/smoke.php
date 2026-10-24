@@ -92,6 +92,9 @@ $rows = substr_count($body, '<tr>');
 check($rows > 100, 'Expected the seeded coffee products.');
 check(substr_count(filter('Good-morning Symphony'), '<tr>') == 2, 'Product filtering failed.');
 check(substr_count(filter("not-a-blend' OR 1=1 -- "), '<tr>') == $rows, 'Filter injection no longer works.');
+$body = filter("' OR 1=1;--");
+check(substr_count($body, '<tr>') == $rows, 'The semicolon injection should show every product.');
+check(!str_contains($body, 'ERROR:'), 'Trailing SQL must not hide a successful first result.');
 check(str_contains(filter("'"), 'ERROR:'), 'Malformed SQL should show an error.');
 
 login('test', 'wrong-password');
@@ -119,10 +122,13 @@ login("' OR role='admin' -- ", '');
 check(str_contains(request('/index.php'), '>admin</span>'), 'Login injection no longer works.');
 filter("not-a-blend'; UPDATE coffee SET blend_name='Migration test' WHERE id=1; SELECT 1; -- ");
 check(substr_count(filter('Migration test'), '<tr>') == 2, 'Later injected statements were not executed.');
-check(str_contains(filter("not-a-blend'; SELECT * FROM missing_table; -- "), 'ERROR:'), 'Errors in later statements should be displayed.');
+$body = filter("' OR 1=1; SELECT * FROM missing_table; -- ");
+check(substr_count($body, '<tr>') == $rows, 'A later statement error should preserve the first result.');
+check(!str_contains($body, 'ERROR:'), 'A later statement error should not replace the first result.');
 request('/lib/logout.php', array(), 302);
 check(str_contains(request('/lib/login.php', array('username' => "'", 'password' => ''), 500), 'ERROR:'), 'Malformed login SQL should show an error.');
 check(str_contains(request('/lib/delete_item.php', array('id' => 'invalid SQL'), 500), 'ERROR:'), 'Malformed delete SQL should show an error.');
+check(str_contains(request('/lib/delete_item.php', array('id' => '0; SELECT * FROM missing_table'), 500), 'ERROR:'), 'A later error without a first SELECT result should still be displayed.');
 
 login('admin', 'admin');
 filter("not-a-blend'; DROP TABLE coffee; DROP TABLE users; -- ");
