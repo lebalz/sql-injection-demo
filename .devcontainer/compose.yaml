@@ -1,0 +1,39 @@
+name: sql-injection-demo
+
+services:
+  app:
+    build: .
+    volumes:
+      - ..:/workspaces/sql-injection-demo
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      SQL_INJECTION_DB_HOST: mysql
+      SQL_INJECTION_DB_PORT: 3306
+      SQL_INJECTION_DB_USERNAME: sql_injection
+      SQL_INJECTION_DB_PASSWORD: foobar
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4.13
+    environment:
+      MYSQL_ROOT_PASSWORD: local-root-password
+      MYSQL_DATABASE: inject_demodb
+      MYSQL_USER: sql_injection
+      MYSQL_PASSWORD: foobar
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../sql/create_db.sql:/docker-entrypoint-initdb.d/01-create.sql:ro
+      - ../sql/coffee_data.sql:/docker-entrypoint-initdb.d/02-coffee.sql:ro
+      - ../sql/users.sql:/docker-entrypoint-initdb.d/03-users.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_ROOT_PASSWORD mysqladmin ping --host=127.0.0.1 --user=root --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+volumes:
+  mysql-data:
