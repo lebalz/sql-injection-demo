@@ -1,41 +1,28 @@
 <?php
+  session_start();
   require_once('connectdb.php');
-  if (getenv('DATABASE_URL')) {
-    $db_props = parse_url(getenv('DATABASE_URL'));
-    $database = substr($db_props['path'], 1);
-  } else {
-    $database = 'inject_demodb';
-  }
-  $db = connectdb('information_schema');
-  mysqli_query($db, "CREATE DATABASE IF NOT EXISTS $database;");
-  mysqli_close($db);
-  // coffee table
-  $drop_sql = 'DROP TABLE IF EXISTS coffee;';
-  $create_sql = file_get_contents('../sql/create_db.sql');
-  $data_sql = file_get_contents('../sql/coffee_data.sql');
+  $db = NULL;
+  try {
+    $database = database_name();
+    $db = connectdb('');
+    $quoted_database = '`' . str_replace('`', '``', $database) . '`';
+    mysqli_query($db, "CREATE DATABASE IF NOT EXISTS $quoted_database;");
+    mysqli_select_db($db, $database);
 
+    // coffee table
+    mysqli_query($db, 'DROP TABLE IF EXISTS coffee;');
+    mysqli_query($db, file_get_contents(__DIR__ . '/../sql/create_db.sql'));
+    mysqli_query($db, file_get_contents(__DIR__ . '/../sql/coffee_data.sql'));
 
-
-  $db = connectdb();
-  $result = mysqli_query($db, $drop_sql);
-  if (!$result) {
-    die("ERROR: " . mysqli_error($db));
+    // user table
+    run_query($db, file_get_contents(__DIR__ . '/../sql/users.sql'));
+  } catch (Throwable $e) {
+    http_response_code(500);
+    echo ('ERROR: ' . $e->getMessage());
+    return;
+  } finally {
+    if ($db) mysqli_close($db);
   }
-  $result = mysqli_query($db, $create_sql);
-  if (!$result) {
-    die("ERROR: " . mysqli_error($db));
-  }
-  $result = mysqli_query($db, $data_sql);
-  if (!$result) {
-    die("ERROR: " . mysqli_error($db));
-  }
-
-  // user table
-  $recreate_users = file_get_contents('../sql/users.sql');
-  $result = mysqli_multi_query($db, $recreate_users);
-  if (!$result) {
-    die("ERROR: " . mysqli_error($db));
-  }
-  mysqli_close($db);
+  $_SESSION = array();
   header('Location: ../index.php');
 ?>
