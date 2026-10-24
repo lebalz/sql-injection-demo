@@ -2,7 +2,10 @@ name: sql-injection-demo
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        PHP_VERSION: 8.5.12
     volumes:
       - ..:/workspaces/sql-injection-demo
     ports:
