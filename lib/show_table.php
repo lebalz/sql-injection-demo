@@ -7,26 +7,6 @@ function show_table($blend_name)
   require_once('helpers.php');
   $logged_in = logged_in();
   $admin = is_admin();
-  ?>
-  <table class="table border">
-    <tr>
-      <th>ID</th>
-      <th>BlendName</th>
-      <th>Origin</th>
-      <th>Variety</th>
-      <th>Notes</th>
-      <th>Intensifier</th>
-      <th>Price</th>
-      <?php
-      if ($logged_in) {
-        echo ("<th>Shop</th>");
-      }
-      if ($admin) {
-        echo ("<th>Löschen</th>");
-      }
-      ?>
-    </tr>
-    <?php
     require_once('connectdb.php');
     // vulnerability to sql injection
     $query = "SELECT * FROM coffee WHERE blend_name LIKE '%$blend_name%';";
@@ -46,17 +26,36 @@ function show_table($blend_name)
     <?php
     // mysqli_multi_query is required to demonstrate all possible
     // sql-injection variants. With mysqli_query only the first
-    // query statement is performed to prevent sql injection...
+    // query statement is performed. Other injection variants remain possible.
+    $db = NULL;
+    $result = false;
     try {
       $db = connectdb();
-      $result = mysqli_multi_query($db, $query);
-      if ($result) {
-        $result = mysqli_use_result($db);
-      }
-    } catch (Error $e) {
-      $result = false;
-      echo ('ERROR: ' . $e);
+      $result = run_query($db, $query);
+    } catch (Throwable $e) {
+      require_once(__DIR__ . '/show_sql_error.php');
+      show_sql_error($e->getMessage());
     }
+    ?>
+  <table class="table border">
+    <tr>
+      <th>ID</th>
+      <th>BlendName</th>
+      <th>Origin</th>
+      <th>Variety</th>
+      <th>Notes</th>
+      <th>Intensifier</th>
+      <th>Price</th>
+      <?php
+      if ($logged_in) {
+        echo ("<th>Shop</th>");
+      }
+      if ($admin) {
+        echo ("<th>Löschen</th>");
+      }
+      ?>
+    </tr>
+    <?php
     if ($result) {
       while ($coffee = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         echo ('<tr>');
@@ -68,7 +67,7 @@ function show_table($blend_name)
           echo ("
             <td>
               <form action=\"lib/add_to_cart.php\" method=\"post\">
-                <button name=\"item\" value=\"$id\" type=\"submit\" class=\"btn px-1 py-0\">
+                <button name=\"id\" value=\"$id\" type=\"submit\" class=\"btn px-1 py-0\">
                   🛒
                 </button>
               </form>
@@ -89,18 +88,9 @@ function show_table($blend_name)
         }
         echo ('</tr>');
       }
-    } else {
-      try {
-        echo ('ERROR: ' . mysqli_error($db));
-      } catch (Error $e) {
-        echo('ERROR: ' . $e);
-      } 
+      mysqli_free_result($result);
     }
-    try {
-      mysqli_close($db);
-    } catch (Error $e) {
-      echo('ERROR: ' . $e);
-    }
+    if ($db) mysqli_close($db);
     ?>
   </table>
 <?php

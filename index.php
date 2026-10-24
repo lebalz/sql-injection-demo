@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  require_once('lib/helpers.php');
+  $filter = array_key_exists('blend', $_GET) ? $_GET['blend'] : '';
+  $user = current_user();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -12,11 +18,6 @@
 </head>
 
 <body>
-  <?php
-  session_start();
-  require_once('lib/helpers.php');
-  $filter = array_key_exists('blend', $_GET) ? $_GET['blend'] : '';
-  ?>
   <nav class="navbar navbar-dark bg-dark justify-content-end">
     <?php
     if (isset($_SESSION['cart_items'])) {
@@ -26,8 +27,7 @@
       </form>
     <?php
   }
-  if (logged_in()) {
-    $user = current_user();
+  if ($user) {
     ?>
       <form class="form-inline mr-0" action="lib/logout.php" method="post">
         <h5 class="mr-2 mt-1"><span class="badge badge-primary"><?php echo ($user['name']); ?></span></h5>
@@ -46,6 +46,13 @@
   ?>
   </nav>
   <?php
+  if (!empty($_SESSION['sql_errors'])) {
+    require_once('lib/show_sql_error.php');
+    foreach ($_SESSION['sql_errors'] as $message) {
+      show_sql_error($message);
+    }
+    unset($_SESSION['sql_errors']);
+  }
   if (isset($_SESSION['login_error'])) {
     unset($_SESSION['login_error']);
     ?>

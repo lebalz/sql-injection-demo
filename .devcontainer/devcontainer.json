@@ -1,0 +1,26 @@
+{
+  "name": "SQL Injection Demo (PHP 8.5)",
+  "dockerComposeFile": "compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/sql-injection-demo",
+  "remoteUser": "vscode",
+  "overrideCommand": false,
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Coffee shop",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "composer install --no-interaction",
+  "customizations": {
+    "vscode": {
+      "extensions": ["bmewburn.vscode-intelephense-client"],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "intelephense.environment.phpVersion": "8.5.0"
+      }
+    }
+  }
+}
