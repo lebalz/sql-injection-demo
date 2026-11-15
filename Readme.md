@@ -2,10 +2,9 @@
 
 <p align="center">
   <a href="#">
-    ![](./docs/images/shop_screenshot.jpg)
+    ![](docs/images/shop_screenshot.jpg)
   </a>
 </p>
-![](./docs/images/shop_screenshot.jpg)
 
 The purpose of this mockup of a simple webshop is to demonstrate the sql injection vulnerability. In this project all database queries used are intentionally vulnerable to sql injection.
 
