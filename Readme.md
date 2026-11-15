@@ -2,7 +2,9 @@
 
 <p align="center">
   <a href="#">
-    ![](docs/images/shop_screenshot.jpg)
+
+      ![](docs/images/shop_screenshot.jpg)
+
   </a>
 </p>
 
