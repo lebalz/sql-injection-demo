@@ -1,7 +1,9 @@
 # Demo SQL Injection
 
 <p align="center">
-  <a href="#"><img src="./docs/images/shop_screenshot.jpg" /></a>
+  <a href="#">
+    ![](./docs/images/shop_screenshot.jpg)
+  </a>
 </p>
 
 The purpose of this mockup of a simple webshop is to demonstrate the sql injection vulnerability. In this project all database queries used are intentionally vulnerable to sql injection.
